@@ -2,6 +2,7 @@
 using System.Text.Json.Serialization;
 using FinanceApp.Api.Features.Auth;
 using FinanceApp.Api.Features.Dashboard;
+using FinanceApp.Api.Features.Grocery;
 using FinanceApp.Api.Features.Stats;
 using FinanceApp.Api.Features.Subscriptions;
 using FinanceApp.Api.Features.Transactions;
@@ -57,6 +58,8 @@ builder.Services.AddHostedService<SubscriptionBillingWorker>();
 builder.Services.AddScoped<ITransactionsService, TransactionsService>();
 builder.Services.AddScoped<IDashboardService, DashboardService>();
 builder.Services.AddScoped<IStatsService, StatsService>();
+builder.Services.AddSignalR();
+builder.Services.AddScoped<IGroceryService, GroceryService>();
 
 // Authentication & JWT Bearer
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
@@ -118,6 +121,7 @@ app.MapSubscriptionsEndpoints();
 app.MapTransactionsEndpoints();
 app.MapDashboardEndpoints();
 app.MapStatsEndpoints();
+app.MapGroceryEndpoints();
 
 app.MapGet("/", () => "FinanceApp API is running");
 
