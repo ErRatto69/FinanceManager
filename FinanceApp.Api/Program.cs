@@ -2,6 +2,7 @@
 using System.Text.Json.Serialization;
 using FinanceApp.Api.Features.Auth;
 using FinanceApp.Api.Features.Dashboard;
+using FinanceApp.Api.Features.Stats;
 using FinanceApp.Api.Features.Subscriptions;
 using FinanceApp.Api.Features.Transactions;
 using FinanceApp.Api.Features.Users;
@@ -49,10 +50,13 @@ builder.Services.AddScoped<IJwtTokenService, JwtTokenService>();
 builder.Services.AddScoped<ICurrentUserService, CurrentUserService>();
 builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<IUsersService, UsersService>();
+
+// Features services
 builder.Services.AddScoped<ISubscriptionsService, SubscriptionsService>();
 builder.Services.AddHostedService<SubscriptionBillingWorker>();
 builder.Services.AddScoped<ITransactionsService, TransactionsService>();
 builder.Services.AddScoped<IDashboardService, DashboardService>();
+builder.Services.AddScoped<IStatsService, StatsService>();
 
 // Authentication & JWT Bearer
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
@@ -113,6 +117,7 @@ app.MapUsersEndpoints();
 app.MapSubscriptionsEndpoints();
 app.MapTransactionsEndpoints();
 app.MapDashboardEndpoints();
+app.MapStatsEndpoints();
 
 app.MapGet("/", () => "FinanceApp API is running");
 
