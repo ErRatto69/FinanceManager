@@ -46,7 +46,6 @@ public class TransactionsService : ITransactionsService
 
         if (year.HasValue && month.HasValue)
         {
-            // Filter by PaidDate if paid, otherwise by DueDate
             query = query.Where(t =>
                 (t.IsPaid && t.PaidDate.HasValue && t.PaidDate.Value.Year == year.Value && t.PaidDate.Value.Month == month.Value) ||
                 (!t.IsPaid && t.DueDate.Year == year.Value && t.DueDate.Month == month.Value));
@@ -151,6 +150,17 @@ public class TransactionsService : ITransactionsService
             throw new NotFoundException($"Transaction with ID {id} not found.");
         }
 
+        var today = DateOnly.FromDateTime(DateTime.UtcNow);
+
+        // Blocco modifica se la transazione era già saldata in un mese precedente
+        if (transaction.IsPaid && transaction.PaidDate.HasValue)
+        {
+            if (transaction.PaidDate.Value.Year != today.Year || transaction.PaidDate.Value.Month != today.Month)
+            {
+                throw new BadRequestException("Paid transactions from previous months cannot be modified.");
+            }
+        }
+
         if (transaction.CategoryId != request.CategoryId)
         {
             var categoryExists = await _dbContext.Categories
@@ -168,7 +178,7 @@ public class TransactionsService : ITransactionsService
         var amountChf = Math.Round(request.Amount * exchangeRate, 2, MidpointRounding.AwayFromZero);
 
         DateOnly? paidDate = request.IsPaid
-            ? (request.PaidDate ?? transaction.PaidDate ?? DateOnly.FromDateTime(DateTime.UtcNow))
+            ? (request.PaidDate ?? transaction.PaidDate ?? today)
             : null;
 
         transaction.Title = request.Title.Trim();
@@ -235,6 +245,17 @@ public class TransactionsService : ITransactionsService
         if (transaction is null)
         {
             throw new NotFoundException($"Transaction with ID {id} not found.");
+        }
+
+        var today = DateOnly.FromDateTime(DateTime.UtcNow);
+
+        // Blocco cancellazione se la transazione era già saldata in un mese precedente
+        if (transaction.IsPaid && transaction.PaidDate.HasValue)
+        {
+            if (transaction.PaidDate.Value.Year != today.Year || transaction.PaidDate.Value.Month != today.Month)
+            {
+                throw new BadRequestException("Paid transactions from previous months cannot be deleted.");
+            }
         }
 
         _dbContext.Transactions.Remove(transaction);

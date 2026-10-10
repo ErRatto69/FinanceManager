@@ -3,6 +3,7 @@ using System.Text.Json.Serialization;
 using FinanceApp.Api.Features.Auth;
 using FinanceApp.Api.Features.Dashboard;
 using FinanceApp.Api.Features.Grocery;
+using FinanceApp.Api.Features.Grocery.Hubs;
 using FinanceApp.Api.Features.Stats;
 using FinanceApp.Api.Features.Subscriptions;
 using FinanceApp.Api.Features.Transactions;
@@ -94,6 +95,17 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
 
 builder.Services.AddAuthorization();
 
+builder.Services.AddCors(options =>
+{
+    options.AddDefaultPolicy(policy =>
+    {
+        policy.WithOrigins("http://localhost:5173", "http://127.0.0.1:5173")
+            .AllowAnyHeader()
+            .AllowAnyMethod()
+            .AllowCredentials();
+    });
+});
+
 var app = builder.Build();
 
 app.UseExceptionHandler();
@@ -111,6 +123,7 @@ using (var scope = app.Services.CreateScope())
     }
 }
 
+app.UseCors();
 app.UseAuthentication();
 app.UseAuthorization();
 
@@ -122,6 +135,7 @@ app.MapTransactionsEndpoints();
 app.MapDashboardEndpoints();
 app.MapStatsEndpoints();
 app.MapGroceryEndpoints();
+app.MapHub<GroceryHub>("/hubs/grocery");
 
 app.MapGet("/", () => "FinanceApp API is running");
 
