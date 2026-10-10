@@ -1,0 +1,73 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512">
+  <defs>
+    <!-- Sfondo Dark Slate coerente con l'app -->
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0f172a"/>
+      <stop offset="60%" stop-color="#090d16"/>
+      <stop offset="100%" stop-color="#020617"/>
+    </linearGradient>
+
+    <!-- Sfumatura verde Smeraldo accesa -->
+    <linearGradient id="emeraldGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#34d399"/>
+      <stop offset="50%" stop-color="#10b981"/>
+      <stop offset="100%" stop-color="#059669"/>
+    </linearGradient>
+
+    <!-- Carta di credito in risalto -->
+    <linearGradient id="cardGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#6ee7b7"/>
+      <stop offset="100%" stop-color="#10b981"/>
+    </linearGradient>
+
+    <!-- Corpo del portafoglio Dark Glass -->
+    <linearGradient id="walletGlass" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#1e293b"/>
+      <stop offset="100%" stop-color="#0f172a"/>
+    </linearGradient>
+
+    <!-- Glow radiale Neon Smeraldo -->
+    <filter id="ambientGlow" x="-30%" y="-30%" width="160%" height="160%">
+      <feGaussianBlur stdDeviation="45" result="blur"/>
+    </filter>
+
+    <!-- Ombreggiatura volumetrica -->
+    <filter id="dropShadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="16" stdDeviation="18" flood-color="#000000" flood-opacity="0.6"/>
+    </filter>
+  </defs>
+
+  <!-- Base Icona con angoli stondati PWA -->
+  <rect width="512" height="512" rx="128" fill="url(#bg)"/>
+
+  <!-- Bordo sottile di riflesso dello schermo -->
+  <rect x="2" y="2" width="508" height="508" rx="126" fill="none" stroke="#334155" stroke-width="2" stroke-opacity="0.3"/>
+
+  <!-- Bagliore Smeraldo d'atmosfera sul retro -->
+  <circle cx="256" cy="256" r="140" fill="#10b981" opacity="0.28" filter="url(#ambientGlow)"/>
+
+  <!-- 1. Carta di credito che fuoriesce (inclinata) -->
+  <g filter="url(#dropShadow)">
+    <rect x="156" y="145" width="200" height="125" rx="20" fill="url(#cardGrad)" transform="rotate(-7 256 207)"/>
+    <!-- Banda magnetica decorativa / Chip -->
+    <rect x="175" y="165" width="34" height="26" rx="6" fill="#064e3b" opacity="0.35" transform="rotate(-7 256 207)"/>
+    <!-- Linea decorativa lucida della carta -->
+    <path d="M 180 230 L 330 212" stroke="#ffffff" stroke-width="3" stroke-linecap="round" stroke-opacity="0.35"/>
+  </g>
+
+  <!-- 2. Corpo principale del Portafoglio (Dark Glassmorphism) -->
+  <g filter="url(#dropShadow)">
+    <rect x="128" y="205" width="256" height="178" rx="34" fill="url(#walletGlass)" stroke="#334155" stroke-width="2.5"/>
+
+    <!-- Accento Smeraldo sul bordo superiore -->
+    <path d="M 164 205 L 348 205" stroke="url(#emeraldGrad)" stroke-width="3" stroke-linecap="round"/>
+
+    <!-- Linea di cucitura/tasca inferiore -->
+    <path d="M 128 255 Q 256 280 384 255" fill="none" stroke="#334155" stroke-width="2" stroke-dasharray="6 4" stroke-opacity="0.7"/>
+
+    <!-- Chiusura metallica con badge Smeraldo -->
+    <rect x="312" y="264" width="72" height="58" rx="18" fill="url(#emeraldGrad)"/>
+    <circle cx="348" cy="293" r="8" fill="#ffffff"/>
+    <circle cx="348" cy="293" r="4" fill="#047857"/>
+  </g>
+</svg>
