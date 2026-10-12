@@ -1,14 +1,14 @@
+# Stage 1: Compila l'app React con Node
 FROM node:22-alpine AS build
 WORKDIR /app
 
-COPY . .
-RUN if [ -f package.json ] && [ -f tsconfig.json ] && [ -f src/main.tsx ]; then \
-      if [ -f package-lock.json ]; then npm ci; else npm install; fi && \
-      npm run build; \
-    else \
-      mkdir -p dist && cp -r public/* dist/; \
-    fi
+COPY package*.json ./
+RUN npm ci
 
+COPY . .
+RUN npm run build
+
+# Stage 2: Prende la cartella 'dist' compilata e la mette in Nginx
 FROM nginx:alpine
 COPY --from=build /app/dist /usr/share/nginx/html
 COPY nginx.conf /etc/nginx/conf.d/default.conf
