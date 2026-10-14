@@ -43,12 +43,12 @@ export default defineConfig({
   server: {
     proxy: {
       '/api': {
-        target: 'https://api.finance.home-ratti.duckdns.org/',
+        target: 'https://finance.home-ratti.duckdns.org/',
         changeOrigin: true,
         secure: false,
       },
       '/hubs': {
-        target: 'https://api.finance.home-ratti.duckdns.org/',
+        target: 'https://finance.home-ratti.duckdns.org/',
         ws: true,
         changeOrigin: true,
         secure: false,
