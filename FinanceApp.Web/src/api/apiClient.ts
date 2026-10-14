@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 export const apiClient = axios.create({
-    baseURL: 'https://finance.home-ratti.duckdns.org/api',
+    baseURL: 'https://finance.home-ratti.duckdns.org/',
     headers: {
         'Content-Type': 'application/json',
     },
